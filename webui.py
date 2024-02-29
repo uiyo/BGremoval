@@ -8,20 +8,18 @@ import torch
 import tempfile
 from PIL import Image
 from torchvision import transforms
-from rembg import remove
+from rembg import new_session, remove
 import zipfile
 
 from efficient_sam.build_efficient_sam import build_efficient_sam_vitt, build_efficient_sam_vits
 
-
-
-
-title = 'A simple tool for efficient background remove'
-
+title = '图片背景批量移除工具'
+model_name = "u2net" # selections: u2net,u2netp, u2net_human_seg,u2net_cloth_seg, silueta, isnet-general-use, isnet-anime, sam(*different input)
+session = new_session(model_name)
 with gr.Blocks(title=title).queue() as root:
     # github_banner_path = 'https://galaxyfs-in-dev.dev.ihuman.com/nas/ai-tools/bgremove_title.png'
     # gr.HTML(f'<p align="center"><a href="https://github.com/uiyo/BGremoval"><img src={github_banner_path} width="1200"/></a></p>')
-    gr.Markdown("# 批量图片背景移除工具")
+    gr.Markdown("# 图片背景批量移除工具")
     with gr.Row():
         gallery = gr.Gallery(label="segemented images", show_label=False, visible=True, elem_id='gallery', columns = [3], height='auto', interactive=False)
         upload = gr.Files(label="上传图片", file_types=["image"])
@@ -36,7 +34,8 @@ with gr.Blocks(title=title).queue() as root:
             for im in files:
                 # 转换成PIL格式
                 orig_im = Image.open(im.name)
-                proc_im = remove(orig_im, alpha_matting=True, post_process_mask=True)
+                # proc_im = remove(orig_im)
+                proc_im = remove(orig_im, alpha_matting=True, post_process_mask=True, alpha_matting_foreground_threshold=270, alpha_matting_background_threshold=20, alpha_matting_erode_size=11, session=session)
                 image_list.append(proc_im)
 
             return gr.update(value=image_list)
