@@ -21,7 +21,7 @@ title = 'A simple tool for efficient background remove'
 with gr.Blocks(title=title).queue() as root:
     # github_banner_path = 'https://galaxyfs-in-dev.dev.ihuman.com/nas/ai-tools/bgremove_title.png'
     # gr.HTML(f'<p align="center"><a href="https://github.com/uiyo/BGremoval"><img src={github_banner_path} width="1200"/></a></p>')
-    gr.Markdown("> 批量图片背景移除工具")
+    gr.Markdown("# 批量图片背景移除工具")
     with gr.Row():
         gallery = gr.Gallery(label="segemented images", show_label=False, visible=True, elem_id='gallery', columns = [3], height='auto', interactive=False)
         upload = gr.Files(label="上传图片", file_types=["image"])
