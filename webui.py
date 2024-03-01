@@ -1,6 +1,7 @@
 import json
 import random
 import os, io
+from tqdm import tqdm 
 
 import gradio as gr
 import numpy as np
@@ -31,7 +32,7 @@ with gr.Blocks(title=title).queue() as root:
                 files = [files]
             image_list = []
 
-            for im in files:
+            for im in tqdm(files):
                 # 转换成PIL格式
                 orig_im = Image.open(im.name)
                 # proc_im = remove(orig_im)
