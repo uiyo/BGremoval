@@ -57,7 +57,7 @@ with gr.Blocks(title=title).queue() as root:
                 for i,im in enumerate(image_list):
                     with open(im[0],'rb') as f:
                         zipf.writestr(upload_files[i].split('/')[-1], f.read())
-            return gr.update(value=zip_filename, visible=True)
+            return gr.update(value=os.path.join(temp_dir, zip_filename), visible=True)
         download.click(download_all, inputs=[gallery,upload], outputs=download_file)
         
 root.launch( 
